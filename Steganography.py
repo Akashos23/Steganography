@@ -9,6 +9,7 @@ def steganography(message, image):
     imageLoad = img.load()
     messageToBin = message_toBin(message + "###")
     sizeMessageToBin = len(messageToBin)
+    newImage = NomImage.replace(".jpg", "copy.PNG")    
     [width, height] = img.size
     compteur = 0
     sizeMessageToBinDivideTwo = sizeMessageToBin/2
@@ -40,8 +41,8 @@ def steganography(message, image):
                     imageLoad[i,x] = (int(NewRTOBit, 2), int(NewGTOBit, 2), int(NewBTOBit, 2))
                     if(compteur == sizeMessageToBinDivideTwo): 
                         compteur  = compteur + 1 
-                        break                               
-    return img
+                        break
+    img.save(newImage)                                
 
 def verificationFinMessage(mes):
      if(len(mes) % 8 == 0):
@@ -51,38 +52,8 @@ def verificationFinMessage(mes):
                return True
      return False
     
-def decodeSteganography2(image):
+def decodeSteganography(image):
      image1 = Image.open(image)
-     image1Load = image1.load()
-     [width, height] = image1.size
-     stop = False
-     compteur = 0
-     messageDechifre = bin(255)[10:]
-     for i in range(width):
-        for x in range(height):
-            if(stop == False and compteur < 4):
-                R,G,B = image1Load[i,x] 
-                RToBit = bin(R)[2:]
-                messageDechifre += RToBit[-2:]
-                if(verificationFinMessage(messageDechifre) == True):
-                     compteur = compteur + 1
-                     if(compteur == 3):
-                          stop = True
-                GToBit = bin(G)[2:]
-                messageDechifre += GToBit[-2:]
-                if(verificationFinMessage(messageDechifre) == True):
-                     compteur = compteur + 1
-                     if(compteur == 3):
-                          stop = True
-                BToBit = bin(B)[2:]
-                messageDechifre += BToBit[-2:]
-                if(verificationFinMessage(messageDechifre) == True):
-                     compteur = compteur + 1
-                     if(compteur == 3):
-                          stop = True
-        return FinalEncodeMessage(messageDechifre)
-     
-def decodeSteganography(image1):     
      image1Load = image1.load()
      [width, height] = image1.size
      stop = False
@@ -137,11 +108,10 @@ while(stop == False):
           NomImage = input()
           print("Veuillez entrez le message que vous voulez insérer à l'image : ")
           message = input()
-          image = steganography(message, NomImage)
+          steganography(message, NomImage)
           print("Message bien inséré dans l'image")
-     if(type == "decodage"):
-          newImage = NomImage.replace(".", "copy.")
-          image.save(newImage)      
+     if(type == "decodage"): 
           print("Decodage du message")
-          print("Le message décodé est le suivant : " + decodeSteganography(image))
-          print(decodeSteganography2("bob_l_epongecopy.jpg"))
+          print("Nom de l'image à  décodé : ")
+          NomImage2 = input()
+          print("Le message décodé est le suivant : " + decodeSteganography(NomImage2))
