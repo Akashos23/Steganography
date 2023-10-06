@@ -9,7 +9,8 @@ def steganography(message, image):
     imageLoad = img.load()
     messageToBin = message_toBin(message + "###")
     sizeMessageToBin = len(messageToBin)
-    newImage = NomImage.replace(".jpg", "copy.PNG")    
+    newImageRename = image.split(".")
+    newImage = newImageRename[0] + "copy.PNG"
     [width, height] = img.size
     compteur = 0
     sizeMessageToBinDivideTwo = sizeMessageToBin/2
@@ -114,4 +115,4 @@ while(stop == False):
           print("Decodage du message")
           print("Nom de l'image à  décodé : ")
           NomImage2 = input()
-          print("Le message décodé est le suivant : " + decodeSteganography(NomImage2))
+          print("Le message décodé est le suivant : " + decodeSteganography(NomImage2) + " dans l'image " + NomImage2)
