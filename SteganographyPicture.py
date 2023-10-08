@@ -65,7 +65,7 @@ def VerifyPicture(image1Size, image2Size):
     FullSizeImage2 = width2 * height2
     if(FullSizeImage1  < FullSizeImage2):
         return False
-    if(FullSizeImage1 > FullSizeImage2):
+    if(FullSizeImage1 >= FullSizeImage2):
         return True
 
 print("Entrez l'image sur laquelle vous voulez mettre une nouvelle image : ")
@@ -74,4 +74,6 @@ print("Entrez l'image que vous voulez cachez : ")
 image2 = input()
 print(SteganographyPicture(image1, image2))
 img2 = Image.open(image2)
-decodeSteganographyImage("PictureInPictureCopy.PNG", img2.size)
+newImageRename = image1.split(".")
+newImage = newImageRename[0] + "inPictureEncode.PNG"
+decodeSteganographyImage(newImage, img2.size)
