@@ -7,7 +7,8 @@ def SteganographyPicture(image1, image2):
     HeightPicture = False
     imageLoad1 = img1.load()
     imageLoad2 = img2.load()
-    newImage = "PictureInPicturecopy.PNG"
+    newImageRename = image1.split(".")
+    newImage = newImageRename[0] + "inPictureEncode.PNG"
     if(VerifyPicture(img1.size, img2.size) == False):
         return "L'image " + image2 + " est plus grande que l'image " + image1 + ", on ne peut encoder l'image "+ image2 +" sur l'image " + image1
     [width1, height1] = img1.size
@@ -29,7 +30,8 @@ def decodeSteganographyImage(image, size):
     img = Image.open(image)
     [width, height] = size
     imageLoad = img.load()
-    newImage = "PictureInPicturecopyImage.PNG"
+    newImageRename = image1.split(".")
+    newImage = newImageRename[0] + "inPictureDecode.PNG"
     for x in range(width):
         for y in range(height):
             [R1,G1,B1] = TransformToBin(imageLoad[x, y])
