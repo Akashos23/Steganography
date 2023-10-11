@@ -44,9 +44,9 @@ def decodeSteganographyImage(image, size):
 def TransformToBin(image):
     R,G,B = image
     tabRGBToBin = []
-    NewRToBin = bin(R)[2:]
-    NewGToBin = bin(G)[2:]
-    NewBToBin = bin(B)[2:]
+    NewRToBin = bin(R)[2:].zfill(8) 
+    NewGToBin = bin(G)[2:].zfill(8)
+    NewBToBin = bin(B)[2:].zfill(8)
     tabRGBToBin.append(NewRToBin)
     tabRGBToBin.append(NewGToBin)
     tabRGBToBin.append(NewBToBin)
@@ -61,18 +61,16 @@ def DefineSizeTab(Size1, Size2):
 def VerifyPicture(image1Size, image2Size):
     [width1, height1] = image1Size
     [width2, height2] = image2Size
-    FullSizeImage1 = width1 * height1
-    FullSizeImage2 = width2 * height2
-    if(FullSizeImage1  < FullSizeImage2):
-        return False
-    if(FullSizeImage1 >= FullSizeImage2):
+    if(width1 >= width2 and height1 >= height2):
         return True
+    else:
+        return False
 
 print("Entrez l'image sur laquelle vous voulez mettre une nouvelle image : ")
 image1 = input()
 print("Entrez l'image que vous voulez cachez : ")
 image2 = input()
-print(SteganographyPicture(image1, image2))
+SteganographyPicture(image1, image2)
 img2 = Image.open(image2)
 newImageRename = image1.split(".")
 newImage = newImageRename[0] + "inPictureEncode.PNG"
