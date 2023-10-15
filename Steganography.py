@@ -29,7 +29,7 @@ def steganography(message, image):
                 NewGTOBit = bin(G)[2:]#Transformer G en binaire
                 NewBTOBit = bin(B)[2:]#Transformer B en binaire
                 if(compteur < sizeMessageToBinDivideTwo):
-                     RToBit = bin(R)[2:]#Transformer B en binaire
+                     RToBit = bin(R)[2:]#Transformer R en binaire
                      SizeRToBit = len(RToBit)#longuer de la variable RToBit
                      NewRTOBit = RToBit[0:SizeRToBit-2] + messageToBin[:2]#Nouvelle valeur de R du pixel de l'image (prendre les 6 prémier caractere de la variable RToBit et ajouter les deux premier caractere de la variable messageToBin)
                      messageToBin = messageToBin[2:len(messageToBin)]#Retirer les deux prémier caractere de la variable messageToBin
