@@ -19,11 +19,11 @@ def steganography(message, image):
     sizeMessageToBin = len(messageToBin)
     newImageRename = image.split(".")#Transformer en un tableau de taille 2 (avant le point et après le point)
     newImage = newImageRename[0] + "copy.PNG"#Recuperer la chaine de caractere avant le point + coller la chaine de caractere "copy.PNG"
-    [width, height] = img.size
+    [height, width] = img.size
     compteur = 0
     sizeMessageToBinDivideTwo = sizeMessageToBin/2#cette variable indiquera la limite du compteur(le changement de pixel(RGB) de l'image se fera deux par deux donc la longuer du message divisé par deux)
-    for i in range(width):
-        for x in range(height):
+    for i in range(height):
+        for x in range(width):
                 R,G,B = imageLoad[i,x]#Recuperer le RGB de chaque pixel de l'image
                 NewRTOBit = bin(R)[2:]#Transformer R en binaire
                 NewGTOBit = bin(G)[2:]#Transformer G en binaire
@@ -71,12 +71,12 @@ decodeSteganography est une fonction prenant en entré une image et retournant l
 def decodeSteganography(image):
      image1 = Image.open(image)#ouvrir l'image
      image1Load = image1.load()#recuperer les données de l'image
-     [width, height] = image1.size#recuperer la taille de l'image(longueur, largeur)
+     [height, width] = image1.size#recuperer la taille de l'image(longueur, largeur)
      stop = False
      compteur = 0
      messageDechifre = bin(255)[10:]
-     for i in range(width):
-        for x in range(height):
+     for i in range(height):
+        for x in range(width):
             if(stop == False and compteur < 4):
                 R,G,B = image1Load[i,x] #Recuperer le RGB de chaque pixel de l'image
                 RToBit = bin(R)[2:]#Transformer R en binaire de chaque pixel
