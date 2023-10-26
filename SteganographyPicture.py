@@ -14,7 +14,7 @@ def SteganographyPicture(image1, image2):
     if(VerifyPicture(img1.size, img2.size) == False):#Verifier que la taille de la première image est superieur à la deuxième image via la fonction VerifyPicture
         return "L'image " + image2 + " est plus grande que l'image " + image1 + ", on ne peut encoder l'image "+ image2 +" sur l'image " + image1
     [height, width] = img2.size
-    imageLoad1 = endSignal(imageLoad1, img2.size)
+    imageLoad1 = endSignal(imageLoad1, img2.size)#Defenir le signal (zinzolin) pour pouvoir avoir la taille de l'image lors du decodage
     for x in range(height):
         for y in range(width):#Double for permettant d'itérer sur les deux images
             [R1,G1,B1] = TransformToBin(imageLoad1[x, y])#Recuperer le RGB de chaque pixel de l'image1 et transformer la valeur en binaire via la fonction TransformToBin
@@ -26,29 +26,39 @@ def SteganographyPicture(image1, image2):
     img1.save(newImage)#Sauvegarder la nouvelle image
     return image2 + " est bien inséré dans "+ image1 +", le nom du fichier encodé est " + newImage 
 
+"""
+message_toBin est une fonction prenant en entré un message de type String pouvant contenir des lettres, des symboles ou des chiffres
+Cette fonction convertit le message donné en binaire et le retourne
+"""
 def message_toBin(message):
     message_toBin = ''.join(format(ord(i), '08b') for i in message)
     return str(message_toBin)
 
+"""
+endSignal est une fonction prenant en entré une image ainsi que la taille de l'image, 
+Cette fonction retourne une image avec sur la longuer et la largeur de la taille de l'image 2, la couleur zinzolin 
+"""
 def endSignal(imageLoad, sizeImage2):
     [height, width] = sizeImage2
-    imageLoad[0, width] = (108, 2, 119)
-    imageLoad[height, 0] = (108, 2, 119)
+    imageLoad[0, width] = (108, 2, 119)#placer la couleur zinzolin a cette indice du pixel de l'image
+    imageLoad[height, 0] = (108, 2, 119)#placer la couleur zinzolin a cette indice du pixel de l'image
     return imageLoad
 
+"""
+decodeSignal est une fonction prenant en entré une image ainsi que la taille de cette image
+Cette fonction permet de retourner la taille de l'image encodé dans cette image en reperant la couleur zinzolin
+"""
 def decodeSignal(imageLoad, sizeImage):
     [height, width] = sizeImage
     tab = []
     for i in range(height):
-        for y in range(1):
-           if(imageLoad[i, y] == (108,2,119)):
-               tab.append(i)
-               break
-    for i in range(1):
-        for y in range(width):
-           if(imageLoad[i, y] == (108,2,119)):
-               tab.append(y)
-               break
+        if(imageLoad[i, 0] == (108,2,119)):#si il repere la couleur zinzorin sur l'image alors il ajoute au tableau l'indice i de la couleur zinzolin
+           tab.append(i)
+           break
+    for y in range(width):
+        if(imageLoad[0, y] == (108,2,119)):#si il repere la couleur zinzorin sur l'image alors il ajoute au tableau l'indice y de la couleur zinzolin
+            tab.append(y)
+            break
     return tab
 
 
@@ -59,7 +69,7 @@ def decodeSteganographyImage(image):
     img = Image.open(image)#Ouvrir l'image
     [heightImage, widthImage] = img.size #Recuperer la taille de l'image à décodé
     imageLoad = img.load() #Sauvegarder les donnée de l'image à décodé
-    [height, width] = decodeSignal(imageLoad, img.size)
+    [height, width] = decodeSignal(imageLoad, img.size)#Recuperer la taille de l'image encodé dans l'image donnée en paramètre via la fonction decodeSignal
     newImageRename = image.split(".")
     newImage = newImageRename[0] + "inPictureDecode.PNG"
     for x in range(heightImage):
