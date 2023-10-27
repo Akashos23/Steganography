@@ -27,42 +27,6 @@ def SteganographyPicture(image1, image2):
     return image2 + " est bien inséré dans "+ image1 +", le nom du fichier encodé est " + newImage 
 
 """
-message_toBin est une fonction prenant en entré un message de type String pouvant contenir des lettres, des symboles ou des chiffres
-Cette fonction convertit le message donné en binaire et le retourne
-"""
-def message_toBin(message):
-    message_toBin = ''.join(format(ord(i), '08b') for i in message)
-    return str(message_toBin)
-
-"""
-endSignal est une fonction prenant en entré une image ainsi que la taille de l'image, 
-Cette fonction retourne une image avec sur la longuer et la largeur de la taille de l'image 2, la couleur zinzolin 
-"""
-def endSignal(imageLoad, sizeImage2):
-    [height, width] = sizeImage2
-    imageLoad[0, width] = (108, 2, 119)#placer la couleur zinzolin a cette indice du pixel de l'image
-    imageLoad[height, 0] = (108, 2, 119)#placer la couleur zinzolin a cette indice du pixel de l'image
-    return imageLoad
-
-"""
-decodeSignal est une fonction prenant en entré une image ainsi que la taille de cette image
-Cette fonction permet de retourner la taille de l'image encodé dans cette image en reperant la couleur zinzolin
-"""
-def decodeSignal(imageLoad, sizeImage):
-    [height, width] = sizeImage
-    tab = []
-    for i in range(height):
-        if(imageLoad[i, 0] == (108,2,119)):#si il repere la couleur zinzorin sur l'image alors il ajoute au tableau l'indice i de la couleur zinzolin
-           tab.append(i)
-           break
-    for y in range(width):
-        if(imageLoad[0, y] == (108,2,119)):#si il repere la couleur zinzorin sur l'image alors il ajoute au tableau l'indice y de la couleur zinzolin
-            tab.append(y)
-            break
-    return tab
-
-
-"""
 decodeSteganographyImage prend en entrée une image à décodé et la taille de l'image encodé dans l'image décodé 
 """            
 def decodeSteganographyImage(image):
@@ -84,6 +48,41 @@ def decodeSteganographyImage(image):
                 imageLoad[x,y] = (255, 255, 255) #attribuer la valeur (255, 255, 255) au pixel différents à la taille de l'image encodé afin d'avoir un visuel seulement sur l'image décodé
     img.save(newImage) #sauvegarder l'image décodé
     return "Image bien décodé, le nom du fichier décodé est " + newImage 
+
+"""
+decodeSignal est une fonction prenant en entré une image ainsi que la taille de cette image
+Cette fonction permet de retourner la taille de l'image encodé dans cette image en reperant la couleur zinzolin
+"""
+def decodeSignal(imageLoad, sizeImage):
+    [height, width] = sizeImage
+    tab = []
+    for i in range(height):
+        if(imageLoad[i, 0] == (108,2,119)):#si il repere la couleur zinzorin sur l'image alors il ajoute au tableau l'indice i de la couleur zinzolin
+           tab.append(i)
+           break
+    for y in range(width):
+        if(imageLoad[0, y] == (108,2,119)):#si il repere la couleur zinzorin sur l'image alors il ajoute au tableau l'indice y de la couleur zinzolin
+            tab.append(y)
+            break
+    return tab
+
+"""
+message_toBin est une fonction prenant en entré un message de type String pouvant contenir des lettres, des symboles ou des chiffres
+Cette fonction convertit le message donné en binaire et le retourne
+"""
+def message_toBin(message):
+    message_toBin = ''.join(format(ord(i), '08b') for i in message)
+    return str(message_toBin)
+
+"""
+endSignal est une fonction prenant en entré une image ainsi que la taille de l'image, 
+Cette fonction retourne une image avec sur la longuer et la largeur de la taille de l'image 2, la couleur zinzolin 
+"""
+def endSignal(imageLoad, sizeImage2):
+    [height, width] = sizeImage2
+    imageLoad[0, width] = (108, 2, 119)#placer la couleur zinzolin a cette indice du pixel de l'image
+    imageLoad[height, 0] = (108, 2, 119)#placer la couleur zinzolin a cette indice du pixel de l'image
+    return imageLoad
 
 """
 Fonction TransformToBin prenant en entrée un pixel de l'image et retournant un tableau avec les RGB du pixel sous format binaire
