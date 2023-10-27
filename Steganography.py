@@ -1,27 +1,17 @@
 from PIL import Image
-
-"""
-message_toBin est une fonction prenant en entré un message de type String pouvant contenir des lettres, des symboles ou des chiffres
-Cette fonction convertit le message donné en binaire et le retourne
-"""
-def message_toBin(message):
-    message_toBin = ''.join(format(ord(i), '08b') for i in message)
-    return str(message_toBin)
-
 """
 steganography est une fonction prenant en entré un message de type string et une image
 Cette fonction permet de rentrer le message dans l'image donné grâce à la méthode de steganography LSB
 """
-def steganography(message, image):
+def encodeSteganography(message, image):
     img = Image.open(image)#ouvrir l'image
     imageLoad = img.load()#Recuperer l'ensemble des données de l'image
     messageToBin = message_toBin(message + "###")#transforme le message de type string en binaire via la fonction message_toBin, les ### permettront de detecter la fin du message lors du decodage
-    sizeMessageToBin = len(messageToBin)
     newImageRename = image.split(".")#Transformer en un tableau de taille 2 (avant le point et après le point)
     newImage = newImageRename[0] + "copy.PNG"#Recuperer la chaine de caractere avant le point + coller la chaine de caractere "copy.PNG"
     [height, width] = img.size
     compteur = 0
-    sizeMessageToBinDivideTwo = sizeMessageToBin/2#cette variable indiquera la limite du compteur(le changement de pixel(RGB) de l'image se fera deux par deux donc la longuer du message divisé par deux)
+    sizeMessageToBinDivideTwo = len(messageToBin)/2 #cette variable indiquera la limite du compteur(le changement de pixel(RGB) de l'image se fera deux par deux donc la longuer du message divisé par deux)
     for i in range(height):
         for x in range(width):
                 R,G,B = imageLoad[i,x]#Recuperer le RGB de chaque pixel de l'image
@@ -52,18 +42,6 @@ def steganography(message, image):
                         compteur  = compteur + 1 
                         break
     img.save(newImage)#Sauvegarde de la nouvelle image (message caché à l'intérieur) avec le nom du fichier donnée par la variable newImage                                
-
-"""
-verificationFinMessage est une fonction prenant en entré un message, cette fonction permet de detecter ou non la fin de message 
-Si fin de message il retourne le boolean true sinon false
-"""
-def verificationFinMessage(mes):
-     if(len(mes) % 8 == 0):#verification que la longuer du message est divisible par 8 (reste à 0)
-          if(len(mes) != 8):#si le longuer du message est différent de 8 alors on retire les prémier caractere (exemple : 16 -> 8)
-               mes = mes[-8:]
-          if(mes == "00100011"):#si le message est égale à "00100011" correspondant à un # alors on retourne true sinon false
-               return True
-     return False
 
 """
 decodeSteganography est une fonction prenant en entré une image et retournant le texte que contient l'image
@@ -114,7 +92,25 @@ def FinalEncodeMessage(messageDechifre):
                     MessageFinalDechifre += chr(int(BitDechiffrePer8[-8:], 2))
      return MessageFinalDechifre[:-3]#Retourner le message final en chaine de caractere sans les 3 hashtag                     
 
+"""
+verificationFinMessage est une fonction prenant en entré un message, cette fonction permet de detecter ou non la fin de message 
+Si fin de message il retourne le boolean true sinon false
+"""
+def verificationFinMessage(mes):
+     if(len(mes) % 8 == 0):#verification que la longuer du message est divisible par 8 (reste à 0)
+          if(len(mes) != 8):#si le longuer du message est différent de 8 alors on retire les prémier caractere (exemple : 16 -> 8)
+               mes = mes[-8:]
+          if(mes == "00100011"):#si le message est égale à "00100011" correspondant à un # alors on retourne true sinon false
+               return True
+     return False
 
+"""
+message_toBin est une fonction prenant en entré un message de type String pouvant contenir des lettres, des symboles ou des chiffres
+Cette fonction convertit le message donné en binaire et le retourne
+"""
+def message_toBin(message):
+    message_toBin = ''.join(format(ord(i), '08b') for i in message)
+    return str(message_toBin)
 
 stop = False
 while(stop == False):
@@ -127,7 +123,7 @@ while(stop == False):
           NomImage = input()
           print("Veuillez entrez le message que vous voulez insérer à l'image : ")
           message = input()
-          steganography(message, NomImage)
+          encodeSteganography(message, NomImage)
           print("Message bien inséré dans l'image")
      if(type == "decodage"): 
           print("Decodage du message")
