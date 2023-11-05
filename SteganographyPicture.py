@@ -27,7 +27,7 @@ def SteganographyPicture(image1, image2):
     return image2 + " est bien inséré dans "+ image1 +", le nom du fichier encodé est " + newImage 
 
 """
-decodeSteganographyImage prend en entrée une image à décodé et la taille de l'image encodé dans l'image décodé 
+decodeSteganographyImage prend en entrée une image à décodé 
 """            
 def decodeSteganographyImage(image):
     img = Image.open(image)#Ouvrir l'image

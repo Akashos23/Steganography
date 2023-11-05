@@ -19,21 +19,15 @@ def encodeSteganography(message, image):
                 NewGTOBit = bin(G)[2:]#Transformer G en binaire
                 NewBTOBit = bin(B)[2:]#Transformer B en binaire
                 if(compteur < sizeMessageToBinDivideTwo):
-                     RToBit = bin(R)[2:]#Transformer R en binaire
-                     SizeRToBit = len(RToBit)#longuer de la variable RToBit
-                     NewRTOBit = RToBit[0:SizeRToBit-2] + messageToBin[:2]#Nouvelle valeur de R du pixel de l'image (prendre les 6 prémier caractere de la variable RToBit et ajouter les deux premier caractere de la variable messageToBin)
+                     NewRTOBit = NewRTOBit[0:len(NewRTOBit)-2] + messageToBin[:2]#Nouvelle valeur de R du pixel de l'image (prendre les 6 prémier caractere de la variable RToBit et ajouter les deux premier caractere de la variable messageToBin)
                      messageToBin = messageToBin[2:len(messageToBin)]#Retirer les deux prémier caractere de la variable messageToBin
                      compteur = compteur + 1
                 if(compteur < sizeMessageToBinDivideTwo):
-                     GToBit = bin(G)[2:]#Transformer G en binaire
-                     SizeGToBit = len(GToBit)#longuer de la variable GToBit
-                     NewGTOBit = GToBit[0:SizeGToBit-2] + messageToBin[:2]#Nouvelle valeur de G du pixel de l'image (prendre les 6 prémier caractere de la variable GToBit et ajouter les deux premier caractere de la variable messageToBin)
+                     NewGTOBit = NewGTOBit[0:len(NewGTOBit)-2] + messageToBin[:2]#Nouvelle valeur de G du pixel de l'image (prendre les 6 prémier caractere de la variable GToBit et ajouter les deux premier caractere de la variable messageToBin)
                      messageToBin = messageToBin[2:len(messageToBin)]#Retirer les deux prémier caractere de la variable messageToBin
                      compteur = compteur + 1
                 if(compteur < sizeMessageToBinDivideTwo):
-                     BToBit = bin(B)[2:]#Transformer B en binaire
-                     SizeBToBit = len(BToBit)#longuer de la variable BToBit
-                     NewBTOBit = BToBit[0:SizeBToBit-2] + messageToBin[:2]#Nouvelle valeur de B du pixel de l'image (prendre les 6 prémier caractere de la variable BToBit et ajouter les deux premier caractere de la variable messageToBin)
+                     NewBTOBit = NewBTOBit[0:len(NewBTOBit)-2] + messageToBin[:2]#Nouvelle valeur de B du pixel de l'image (prendre les 6 prémier caractere de la variable BToBit et ajouter les deux premier caractere de la variable messageToBin)
                      messageToBin = messageToBin[2:len(messageToBin)]#Retirer les deux prémier caractere de la variable messageToBin
                      compteur = compteur + 1  
                 if(compteur < sizeMessageToBinDivideTwo + 1):            
@@ -63,18 +57,24 @@ def decodeSteganography(image):
                      compteur = compteur + 1#si c'est le cas ajouter 1 au compteur
                      if(compteur == 3):#si 3 hastag on été détecté alors mettre stop à true et cela permettra de stoper le dechiffrement (message déja dechiffré)
                           stop = True
+                elif(len(messageDechifre) % 8 == 0):
+                     compteur = 0
                 GToBit = bin(G)[2:]#Transformer G en binaire de chaque pixel
                 messageDechifre += GToBit[-2:]#Ajouter a la variable messageDechiffre les deux dernier bits de G
                 if(verificationFinMessage(messageDechifre) == True):#Verifier si messageDechifre est egal à un hashtag 
                      compteur = compteur + 1#si c'est le cas ajouter 1 au compteur
                      if(compteur == 3):#si 3 hastag on été détecté alors mettre stop à true et cela permettra de stoper le dechiffrement (message déja dechiffré)
                           stop = True
+                elif(len(messageDechifre) % 8 == 0):
+                     compteur = 0
                 BToBit = bin(B)[2:]#Transformer B en binaire de chaque pixel
                 messageDechifre += BToBit[-2:]#Ajouter a la variable messageDechiffre les deux dernier bits de B
                 if(verificationFinMessage(messageDechifre) == True):#Verifier si messageDechifre est egal à un hashtag 
                      compteur = compteur + 1#si c'est le cas ajouter 1 au compteur
                      if(compteur == 3):#si 3 hastag on été détecté alors mettre stop à true et cela permettra de stoper le dechiffrement (message déja dechiffré)
                           stop = True
+                elif(len(messageDechifre) % 8 == 0):
+                     compteur = 0
         return FinalEncodeMessage(messageDechifre)#Retourner le message fourni par la fonction FinalEncodeMessage 
                     
 """
